@@ -7,11 +7,7 @@ module Jabot
 			@commands_list = {}
 		end
 
-		def register(&block)
-			instance_eval(&block)
-		end
-
-		def command(name, &block)
+		def add_command(name, &block)
 			@commands_list[name] = block unless @commands_list.include?(name)
 		end
 

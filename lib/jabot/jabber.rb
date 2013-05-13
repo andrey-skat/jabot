@@ -6,6 +6,7 @@ module Jabot
 
 	class Jabber
 		include ::Jabber
+    ::Jabber.debug = true
 
 		attr_reader :remote_clients
 		attr_accessor :is_listen
@@ -18,7 +19,7 @@ module Jabot
 			@is_listen = false
 
 			connect
-		end
+    end
 
 		def connect
 			@client = Client::new JID::new(@client_id + "/bot")
@@ -55,10 +56,14 @@ module Jabot
 			@client.add_message_callback do |m|
 				if m.type != :error
 					sender_id = m.from.node + "@" + m.from.domain
-					puts "Message received from " + sender_id + ": " + m.body
-					if @remote_clients.include?(sender_id)
-						yield(m, sender_id) if block_given?
-					end
+					puts "Message received from " + sender_id# + ": " + m.body
+          unless m.body.nil?
+            if @remote_clients.include?(sender_id)
+              yield(m, sender_id) if block_given?
+            else
+              puts 'access denied'
+            end
+          end
 				else
 					puts "error message"
 				end
