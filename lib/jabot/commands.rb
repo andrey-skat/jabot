@@ -3,30 +3,35 @@
 module Jabot
 	class Commands
 
+    class CommandNotExists < StandardError; end
+
 		def initialize
 			@commands_list = {}
 		end
 
 		def add_command(name, &block)
-			@commands_list[name] = block unless @commands_list.include?(name)
+			@commands_list[name] = block unless command_exists? name
 		end
 
-		def exists?(command_line)
-			@commands_list.include?(parse(command_line)[:name])
-		end
+		def command_exists?(command_name)
+			@commands_list.include? command_name
+    end
 
 		def run(command_line)
-			c = parse command_line
-			@commands_list[c[:name]].call(*c[:args])
+      c = parse command_line
+      unless command_exists? c[:name].downcase
+        raise CommandNotExists, "command '#{c[:name]}' not found"
+      end
+			@commands_list[ c[:name].downcase ].call( *c[:args] )
 		end
 
 		def parse(command_line)
 			args = command_line.split
 			{
-					:name =>  args.shift.to_sym,
+					:name => args.shift.to_sym,
 					:args => args
 			}
-		end
+    end
 
 	end
 end

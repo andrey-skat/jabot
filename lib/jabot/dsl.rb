@@ -16,6 +16,6 @@ module Jabot
 		def clients(list)
 			raise StandardError, 'Clients list must be an array' unless list.is_a?(Array)
 			@config[:clients] = list
-		end
+    end
 	end
 end

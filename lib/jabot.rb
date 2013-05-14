@@ -28,25 +28,46 @@ module Jabot
       @config[:clients].each do |item|
         @jabber.add_remote_client item
       end
+
+      standard_commands
 		end
 
 		def start_listen
-			@jabber.listen do |m, sender_id|
-				if @commands.exists?(m.body)
-					result = @commands.run(m.body)
-					@jabber.send sender_id, result unless result.nil? || result.empty?
-				else
-					@jabber.send sender_id, 'unknown command'
-				end
-			end
-		end
+      @jabber.listen do |message, sender_id|
+        begin
+          result = @commands.run(message)
+          @jabber.send sender_id, result if result.is_a?(String) && !result.empty?
+        rescue Commands::CommandNotExists => e
+          @jabber.send sender_id, e.message
+        end
+      end
+      loop do
+        break unless @jabber.is_listen
+      end
+    end
+
+    def standard_commands
+      command :quit do
+        @jabber.disconnect
+      end
+      command :help do
+      end
+    end
 	end
 
 	def self.start(&block)
 		@base = Base.new
     @base.configure(&block)
 		@base.start_listen
-	end
+  end
 
 end
 
+module REXML
+  class IOSource
+    def match(pattern, cons = false)
+      @buffer = @buffer.force_encoding('utf-8')
+      super(pattern, cons)
+    end
+  end
+end
