@@ -22,7 +22,12 @@ module Jabot
       unless command_exists? c[:name].downcase
         raise CommandNotExists, "command '#{c[:name]}' not found"
       end
-			@commands_list[ c[:name].downcase ].call( *c[:args] )
+
+      begin
+			  @commands_list[ c[:name].downcase ].call( *c[:args] )
+      rescue
+        'Error while executing command'
+      end
 		end
 
 		def parse(command_line)

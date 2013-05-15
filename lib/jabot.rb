@@ -1,8 +1,8 @@
 #encoding: utf-8
 
-require_relative 'jabot/jabber'
-require_relative 'jabot/commands'
-require_relative 'jabot/dsl'
+require 'jabot/jabber'
+require 'jabot/commands'
+require 'jabot/dsl'
 
 module Jabot
 
@@ -18,19 +18,19 @@ module Jabot
 			    password: '',
           clients: []
 			}
+      @standalone_mode = false
     end
 
 		def configure(&block)
 			@commands = Commands.new
+      standard_commands
       instance_eval(&block)
 
       @jabber = Jabber.new client_id: @config[:username], client_password: @config[:password]
       @config[:clients].each do |item|
         @jabber.add_remote_client item
       end
-
-      standard_commands
-		end
+    end
 
 		def start_listen
       @jabber.listen do |message, sender_id|
@@ -41,20 +41,41 @@ module Jabot
           @jabber.send sender_id, e.message
         end
       end
-      loop do
-        break unless @jabber.is_listen
+
+      if @standalone_mode
+        puts 'Start listening...'
+        loop do
+          break unless @jabber.is_listen
+        end
       end
     end
 
+    #add standard commands
     def standard_commands
       command :quit do
-        @jabber.disconnect
-      end
-      command :help do
+        @jabber.stop
       end
     end
 	end
 
+  #start jabot
+  #
+  #Example:
+  #Jabot.start do
+  #  standalone_mode
+  #
+  #  username 'username@jabber.com'
+  #  password '*****'
+  #  clients %w{client@jabber.com}
+  #
+  #  command :download_file do |url, save_path|
+  #    spawn("wget -c -O '#{save_path}' '#{url}'")
+  #  end
+  #
+  #  command :hello do
+  #    'Hello!'
+  #  end
+  #end
 	def self.start(&block)
 		@base = Base.new
     @base.configure(&block)

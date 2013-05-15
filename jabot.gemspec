@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
 	gem.version       = Jabot::VERSION
 	gem.authors       = ['Andrey Skat']
 	gem.email         = %w{andrey2004@gmail.com}
-	#gem.description   = %q{TODO: Write a gem description}
-	gem.summary       = %q{Jabber bot with DSL}
-	#gem.homepage      = ''
+	gem.description   = %q{Jabber bot with DSL}
+	#gem.summary       = %q{Jabber bot with DSL}
+	gem.homepage      = 'https://github.com/andrey-skat/jabot'
 
 	#gem.files         = `git ls-files`.split($/)
 	gem.files         = Dir['lib/**/*']

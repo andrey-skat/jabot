@@ -37,7 +37,7 @@ module Jabot
 
 		def disconnect
       @is_listen = false
-			#@client.close
+			@client.close
 		end
 
 		def add_remote_client(id)
@@ -61,16 +61,20 @@ module Jabot
       @message_callback = @client.add_message_callback 0, @message_callback do |m|
 				if m.type != :error
 					sender_id = "#{m.from.node}@#{m.from.domain}"
-					puts' "Message received from "' + sender_id# + ": " + m.body
+					#puts' "Message received from "' + sender_id# + ": " + m.body
           unless m.body.nil?
             if @remote_clients.include?(sender_id)
               yield(m.body, sender_id) if block_given?
             else
-              puts 'access denied'
+              #puts 'access denied'
             end
           end
         end
       end
+    end
+
+    def stop
+      @is_listen = false
     end
 
 	end

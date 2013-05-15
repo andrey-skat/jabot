@@ -17,5 +17,9 @@ module Jabot
 			raise StandardError, 'Clients list must be an array' unless list.is_a?(Array)
 			@config[:clients] = list
     end
+
+    def standalone_mode
+      @standalone_mode = true
+    end
 	end
 end
