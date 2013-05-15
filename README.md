@@ -12,6 +12,16 @@ Or with Bundler in your Gemfile.
 gem 'jabot'
 ```
 
+### Default commands
+
+<dl>
+  <dt>stop</dt>
+  <dd>Stop bot listening. Also stop main loop, if bot in standalone mode.</dd>
+
+  <dt>help</dt>
+  <dd>Commands list.</dd>
+</dl>
+
 ### Example bot.rb file
 
 ```ruby

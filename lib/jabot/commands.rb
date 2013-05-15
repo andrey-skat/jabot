@@ -38,5 +38,14 @@ module Jabot
       }
     end
 
+    def available_commands
+      @commands_list.map do |key, value|
+        {
+            name: key.to_s,
+            args: value.parameters.map { |item| item[1] }.join(', ')
+        }
+      end
+    end
+
   end
 end

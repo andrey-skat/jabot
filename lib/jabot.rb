@@ -55,6 +55,9 @@ module Jabot
       command :stop do
         @jabber.disconnect
       end
+      command :help do
+        @commands.available_commands.map { |item| "#{item[:name]} #{item[:args]}" }.join("\n")
+      end
     end
   end
 
