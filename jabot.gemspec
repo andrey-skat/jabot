@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'jabot/version'
 
 Gem::Specification.new do |gem|
-	gem.name          = 'jabot'
+  gem.name          = 'jabot'
 	gem.version       = Jabot::VERSION
 	gem.authors       = ['Andrey Skat']
 	gem.email         = %w{andrey2004@gmail.com}
 	gem.description   = %q{Jabber bot with DSL}
-	#gem.summary       = %q{Jabber bot with DSL}
+	gem.summary       = %q{Jabber bot with DSL}
 	gem.homepage      = 'https://github.com/andrey-skat/jabot'
 
 	#gem.files         = `git ls-files`.split($/)

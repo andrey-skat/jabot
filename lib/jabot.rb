@@ -6,23 +6,23 @@ require 'jabot/dsl'
 
 module Jabot
 
-	class Base
+  class Base
     include Jabot::DSL
 
-		attr_reader :jabber, :commands
-		attr_accessor :config
+    attr_reader :jabber, :commands
+    attr_accessor :config
 
-		def initialize
-			@config = {
-					username: '',
-			    password: '',
+    def initialize
+      @config = {
+          username: '',
+          password: '',
           clients: []
-			}
+      }
       @standalone_mode = false
     end
 
-		def configure(&block)
-			@commands = Commands.new
+    def configure(&block)
+      @commands = Commands.new
       standard_commands
       instance_eval(&block)
 
@@ -32,7 +32,7 @@ module Jabot
       end
     end
 
-		def start_listen
+    def start_listen
       @jabber.listen do |message, sender_id|
         begin
           result = @commands.run(message)
@@ -56,7 +56,7 @@ module Jabot
         @jabber.stop
       end
     end
-	end
+  end
 
   #start jabot
   #
@@ -76,10 +76,10 @@ module Jabot
   #    'Hello!'
   #  end
   #end
-	def self.start(&block)
-		@base = Base.new
+  def self.start(&block)
+    @base = Base.new
     @base.configure(&block)
-		@base.start_listen
+    @base.start_listen
   end
 
 end
