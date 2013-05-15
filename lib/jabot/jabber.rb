@@ -73,10 +73,6 @@ module Jabot
       end
     end
 
-    def stop
-      @is_listen = false
-    end
-
   end
 
 end

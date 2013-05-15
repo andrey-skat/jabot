@@ -52,8 +52,8 @@ module Jabot
 
     #add standard commands
     def standard_commands
-      command :quit do
-        @jabber.stop
+      command :stop do
+        @jabber.disconnect
       end
     end
   end
