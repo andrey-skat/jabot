@@ -32,6 +32,7 @@ Jabot.start do
       spawn("wget -c -O '#{save_path}' '#{url}'")
     end
 
+    #if it returns the empty string, it's sent to you
     command :hello do
       'Hello!'
     end
